@@ -139,9 +139,10 @@ app.post('/api/evaluate-translation', async (req, res) => {
     const systemPrompt = `You are an expert Korean language teacher. Evaluate a student's Korean translation and provide:
 1. The student's translation (repeat it)
 2. The correct Korean translation
-3. Detailed explanation of what they did well and what needs improvement
-4. Specific grammar corrections with explanations
-5. Recommendations for improvement
+3. Word-by-word breakdown of the correct translation (format: "Korean word: meaning and function")
+4. Detailed explanation of what they did well and what needs improvement
+5. Specific grammar corrections with explanations
+6. Recommendations for improvement
 
 IMPORTANT FORMATTING RULES:
 - DO NOT use markdown tables (| :--- | :--- |)
@@ -150,6 +151,7 @@ IMPORTANT FORMATTING RULES:
 - Use horizontal lines (---) to separate major sections
 - Use double asterisks (**text**) for bold emphasis
 - Use single asterisks (*text*) for italic emphasis
+- For word breakdown, use format: "word: meaning" on separate lines
 - Keep formatting clean and elegant
 
 Be encouraging but honest. Provide detailed feedback in a structured format.`;
@@ -181,6 +183,7 @@ Please evaluate this translation and provide comprehensive feedback.`;
 function parseEvaluation(evaluation, userTranslation) {
   const lines = evaluation.split('\n');
   let correctTranslation = '';
+  let breakdown = '';
   let explanation = '';
   let grammarCorrections = '';
   let recommendations = '';
@@ -191,6 +194,9 @@ function parseEvaluation(evaluation, userTranslation) {
     
     if (lower.includes('correct translation') || lower.includes('accurate translation') || lower.includes('proper translation')) {
       currentSection = 'correct';
+      continue;
+    } else if (lower.includes('word-by-word') || lower.includes('breakdown') || lower.includes('word breakdown')) {
+      currentSection = 'breakdown';
       continue;
     } else if (lower.includes('explanation') || lower.includes('analysis') || lower.includes('assessment')) {
       currentSection = 'explanation';
@@ -211,6 +217,9 @@ function parseEvaluation(evaluation, userTranslation) {
         if (content && !content.match(/^(correct|accurate|proper)/i)) {
           correctTranslation += content + '\n';
         }
+        break;
+      case 'breakdown':
+        breakdown += content + '\n';
         break;
       case 'explanation':
         explanation += content + '\n';
@@ -233,6 +242,9 @@ function parseEvaluation(evaluation, userTranslation) {
   if (!correctTranslation.trim()) {
     correctTranslation = 'Translation provided above';
   }
+  if (!breakdown.trim()) {
+    breakdown = 'No breakdown available';
+  }
   if (!explanation.trim()) {
     explanation = evaluation;
   }
@@ -246,6 +258,7 @@ function parseEvaluation(evaluation, userTranslation) {
   return {
     userTranslation: userTranslation,
     correctTranslation: correctTranslation.trim(),
+    breakdown: breakdown.trim(),
     explanation: explanation.trim(),
     grammarCorrections: grammarCorrections.trim(),
     recommendations: recommendations.trim()
