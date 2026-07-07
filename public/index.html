@@ -92,28 +92,59 @@
         .level-beginner { background: #86efac; }
         .level-intermediate { background: #fbbf24; }
         .level-advanced { background: #f87171; }
+        
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .typing-animation {
+                font-size: 1.5rem;
+                min-width: 200px;
+            }
+            h1 {
+                font-size: 1.5rem !important;
+            }
+            h2 {
+                font-size: 1.25rem !important;
+            }
+            h3 {
+                font-size: 1rem !important;
+            }
+            .mobile-compact {
+                padding: 1rem !important;
+            }
+            .mobile-text-sm {
+                font-size: 0.875rem !important;
+            }
+            select {
+                font-size: 0.875rem !important;
+                padding: 0.5rem !important;
+            }
+            button {
+                font-size: 0.875rem !important;
+                padding: 0.5rem 1rem !important;
+            }
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-purple-50 via-white to-blue-50">
     <div class="min-h-screen">
         <header class="gradient-bg shadow-lg">
-            <div class="container mx-auto px-6 py-8">
+            <div class="container mx-auto px-4 md:px-6 py-6 md:py-8">
                 <div class="text-center">
-                    <h1 class="text-4xl font-bold text-white mb-2">
+                    <h1 class="text-2xl md:text-4xl font-bold text-white mb-2">
                         <span class="korean-font typing-animation" id="typingText"></span>
                         <span class="typing-cursor"></span>
                     </h1>
-                    <p class="text-purple-100 text-lg">Korean Journal Learning - Master Korean through Translation Practice</p>
+                    <p class="text-purple-100 text-sm md:text-lg">Korean Journal Learning - Master Korean through Translation Practice</p>
                 </div>
             </div>
         </header>
 
-        <main class="container mx-auto px-6 py-10 max-w-6xl">
-            <div class="bg-white rounded-2xl shadow-xl border border-purple-100 p-8 mb-8">
-                <div class="flex items-center justify-between mb-6">
-                    <h2 class="text-2xl font-bold text-gray-800">Practice Paragraph</h2>
-                    <div class="flex gap-3 flex-wrap">
-                        <select id="difficultyLevel" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+        <main class="container mx-auto px-4 md:px-6 py-6 md:py-10 max-w-6xl">
+            <div class="bg-white rounded-2xl shadow-xl border border-purple-100 p-4 md:p-8 mb-6 md:mb-8 mobile-compact">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-4 md:mb-6 gap-4">
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-800">Practice Paragraph</h2>
+                    <div class="flex flex-wrap gap-2 md:gap-3">
+                        <select id="difficultyLevel" class="flex-1 md:flex-initial px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm md:text-base">
                             <option value="beginner">
                                 <span class="level-icon level-beginner"></span> Beginner
                             </option>
@@ -124,12 +155,12 @@
                                 <span class="level-icon level-advanced"></span> Advanced
                             </option>
                         </select>
-                        <select id="sourceLang" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        <select id="sourceLang" class="flex-1 md:flex-initial px-3 md:px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent text-sm md:text-base">
                             <option value="en">English</option>
                             <option value="id">Indonesian</option>
                         </select>
-                        <button onclick="generateParagraph()" id="generateBtn" class="px-6 py-2 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 transition-all flex items-center gap-2 shadow-md hover:shadow-lg">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <button onclick="generateParagraph()" id="generateBtn" class="w-full md:w-auto px-4 md:px-6 py-2 bg-purple-600 text-white rounded-lg font-medium hover:bg-purple-700 transition-all flex items-center justify-center gap-2 shadow-md hover:shadow-lg text-sm md:text-base">
+                            <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                             </svg>
                             Generate New
@@ -137,19 +168,19 @@
                     </div>
                 </div>
                 
-                <div id="paragraphBox" class="bg-gradient-to-br from-purple-50 to-blue-50 p-6 rounded-xl border-2 border-purple-200 min-h-[150px] flex items-center justify-center">
-                    <p class="text-gray-500 text-center">Select difficulty level and click "Generate New" to start your Korean translation practice</p>
+                <div id="paragraphBox" class="bg-gradient-to-br from-purple-50 to-blue-50 p-4 md:p-6 rounded-xl border-2 border-purple-200 min-h-[120px] md:min-h-[150px] flex items-center justify-center">
+                    <p class="text-gray-500 text-center text-sm md:text-base">Select difficulty level and click "Generate New" to start your Korean translation practice</p>
                 </div>
             </div>
 
-            <div class="bg-white rounded-2xl shadow-xl border border-purple-100 p-8 mb-8">
-                <h2 class="text-2xl font-bold text-gray-800 mb-4">Your Korean Translation</h2>
-                <p class="text-gray-600 mb-4">Type your Korean translation below. You'll get real-time word suggestions as you type.</p>
+            <div class="bg-white rounded-2xl shadow-xl border border-purple-100 p-4 md:p-8 mb-6 md:mb-8 mobile-compact">
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800 mb-3 md:mb-4">Your Korean Translation</h2>
+                <p class="text-gray-600 mb-3 md:mb-4 text-sm md:text-base">Type your Korean translation below. You'll get real-time word suggestions as you type.</p>
                 
                 <div class="relative">
                     <textarea id="translationInput" 
                         placeholder="여기에 한국어 번역을 입력하세요... (Type your Korean translation here...)"
-                        class="w-full p-6 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 korean-font resize-none transition-all"
+                        class="w-full p-4 md:p-6 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 korean-font resize-none transition-all text-base md:text-lg"
                         rows="6"
                         oninput="handleInput(event)"
                         onkeydown="handleKeyDown(event)"></textarea>
@@ -157,12 +188,12 @@
                     <div id="suggestionTooltip" class="suggestion-tooltip hidden"></div>
                 </div>
 
-                <div class="mt-4 flex items-center justify-between">
-                    <div class="text-sm text-gray-500">
+                <div class="mt-3 md:mt-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
+                    <div class="text-xs md:text-sm text-gray-500">
                         <span id="charCount">0</span> characters
                     </div>
-                    <button onclick="submitTranslation()" id="submitBtn" disabled class="px-8 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button onclick="submitTranslation()" id="submitBtn" disabled class="w-full md:w-auto px-6 md:px-8 py-2 md:py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white rounded-xl font-semibold hover:from-purple-700 hover:to-blue-700 transition-all shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 text-sm md:text-base">
+                        <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                         Submit for Review
@@ -170,88 +201,88 @@
                 </div>
             </div>
 
-            <div id="resultSection" class="hidden bg-white rounded-2xl shadow-xl border border-purple-100 p-8 result-section">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center">
-                        <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <div id="resultSection" class="hidden bg-white rounded-2xl shadow-xl border border-purple-100 p-4 md:p-8 result-section mobile-compact">
+                <div class="flex items-center gap-3 mb-4 md:mb-6">
+                    <div class="w-10 h-10 md:w-12 md:h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center">
+                        <svg class="w-6 h-6 md:w-7 md:h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
-                    <h2 class="text-2xl font-bold text-gray-800">Translation Review</h2>
+                    <h2 class="text-xl md:text-2xl font-bold text-gray-800">Translation Review</h2>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
                     <!-- Left Column -->
-                    <div class="space-y-6">
-                        <div class="bg-blue-50 border-l-4 border-blue-500 p-5 rounded-lg">
-                            <h3 class="font-bold text-blue-900 mb-2 flex items-center gap-2">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <div class="space-y-4 md:space-y-6">
+                        <div class="bg-blue-50 border-l-4 border-blue-500 p-4 md:p-5 rounded-lg">
+                            <h3 class="font-bold text-blue-900 mb-2 flex items-center gap-2 text-sm md:text-base">
+                                <svg class="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"></path>
                                     <path fill-rule="evenodd" d="M4 5a2 2 0 012-2 3 3 0 003 3h2a3 3 0 003-3 2 2 0 012 2v11a2 2 0 01-2 2H6a2 2 0 01-2-2V5zm3 4a1 1 0 000 2h.01a1 1 0 100-2H7zm3 0a1 1 0 000 2h3a1 1 0 100-2h-3zm-3 4a1 1 0 100 2h.01a1 1 0 100-2H7zm3 0a1 1 0 100 2h3a1 1 0 100-2h-3z" clip-rule="evenodd"></path>
                                 </svg>
                                 Your Translation
                             </h3>
-                            <p id="resultYourTranslation" class="text-blue-800 korean-font text-lg"></p>
+                            <p id="resultYourTranslation" class="text-blue-800 korean-font text-base md:text-lg"></p>
                         </div>
 
-                        <div class="bg-green-50 border-l-4 border-green-500 p-5 rounded-lg">
-                            <h3 class="font-bold text-green-900 mb-2 flex items-center gap-2">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <div class="bg-green-50 border-l-4 border-green-500 p-4 md:p-5 rounded-lg">
+                            <h3 class="font-bold text-green-900 mb-2 flex items-center gap-2 text-sm md:text-base">
+                                <svg class="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path>
                                 </svg>
                                 Correct Translation
                             </h3>
-                            <p id="resultCorrectTranslation" class="text-green-800 korean-font text-lg"></p>
+                            <p id="resultCorrectTranslation" class="text-green-800 korean-font text-base md:text-lg"></p>
                         </div>
 
-                        <div class="bg-teal-50 border-l-4 border-teal-500 p-5 rounded-lg">
-                            <h3 class="font-bold text-teal-900 mb-3 flex items-center gap-2">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <div class="bg-teal-50 border-l-4 border-teal-500 p-4 md:p-5 rounded-lg">
+                            <h3 class="font-bold text-teal-900 mb-3 flex items-center gap-2 text-sm md:text-base">
+                                <svg class="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
                                 </svg>
                                 Word-by-Word Breakdown
                             </h3>
-                            <div id="resultBreakdown" class="text-teal-900 max-h-96 overflow-y-auto pr-2"></div>
+                            <div id="resultBreakdown" class="text-teal-900 max-h-64 md:max-h-96 overflow-y-auto pr-2"></div>
                         </div>
                     </div>
 
                     <!-- Right Column -->
-                    <div class="space-y-6">
-                        <div class="bg-purple-50 border-l-4 border-purple-500 p-5 rounded-lg">
-                            <h3 class="font-bold text-purple-900 mb-3 flex items-center gap-2">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <div class="space-y-4 md:space-y-6">
+                        <div class="bg-purple-50 border-l-4 border-purple-500 p-4 md:p-5 rounded-lg">
+                            <h3 class="font-bold text-purple-900 mb-3 flex items-center gap-2 text-sm md:text-base">
+                                <svg class="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="M9 4.804A7.968 7.968 0 005.5 4c-1.255 0-2.443.29-3.5.804v10A7.969 7.969 0 015.5 14c1.669 0 3.218.51 4.5 1.385A7.962 7.962 0 0114.5 14c1.255 0 2.443.29 3.5.804v-10A7.968 7.968 0 0014.5 4c-1.255 0-2.443.29-3.5.804V12a1 1 0 11-2 0V4.804z"></path>
                                 </svg>
                                 Explanation & Analysis
                             </h3>
-                            <div id="resultExplanation" class="text-purple-900 prose prose-sm max-w-none max-h-96 overflow-y-auto pr-2"></div>
+                            <div id="resultExplanation" class="text-purple-900 prose prose-sm max-w-none max-h-64 md:max-h-96 overflow-y-auto pr-2"></div>
                         </div>
 
-                        <div class="bg-yellow-50 border-l-4 border-yellow-500 p-5 rounded-lg">
-                            <h3 class="font-bold text-yellow-900 mb-3 flex items-center gap-2">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 md:p-5 rounded-lg">
+                            <h3 class="font-bold text-yellow-900 mb-3 flex items-center gap-2 text-sm md:text-base">
+                                <svg class="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"></path>
                                 </svg>
                                 Grammar Corrections
                             </h3>
-                            <div id="resultGrammar" class="text-yellow-900 prose prose-sm max-w-none max-h-96 overflow-y-auto pr-2"></div>
+                            <div id="resultGrammar" class="text-yellow-900 prose prose-sm max-w-none max-h-64 md:max-h-96 overflow-y-auto pr-2"></div>
                         </div>
 
-                        <div class="bg-indigo-50 border-l-4 border-indigo-500 p-5 rounded-lg">
-                            <h3 class="font-bold text-indigo-900 mb-3 flex items-center gap-2">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <div class="bg-indigo-50 border-l-4 border-indigo-500 p-4 md:p-5 rounded-lg">
+                            <h3 class="font-bold text-indigo-900 mb-3 flex items-center gap-2 text-sm md:text-base">
+                                <svg class="w-4 h-4 md:w-5 md:h-5" fill="currentColor" viewBox="0 0 20 20">
                                     <path d="M10.394 2.08a1 1 0 00-.788 0l-7 3a1 1 0 000 1.84L5.25 8.051a.999.999 0 01.356-.257l4-1.714a1 1 0 11.788 1.838L7.667 9.088l1.94.831a1 1 0 00.787 0l7-3a1 1 0 000-1.838l-7-3zM3.31 9.397L5 10.12v4.102a8.969 8.969 0 00-1.05-.174 1 1 0 01-.89-.89 11.115 11.115 0 01.25-3.762zM9.3 16.573A9.026 9.026 0 007 14.935v-3.957l1.818.78a3 3 0 002.364 0l5.508-2.361a11.026 11.026 0 01.25 3.762 1 1 0 01-.89.89 8.968 8.968 0 00-5.35 2.524 1 1 0 01-1.4 0zM6 18a1 1 0 001-1v-2.065a8.935 8.935 0 00-2-.712V17a1 1 0 001 1z"></path>
                                 </svg>
                                 Recommendations
                             </h3>
-                            <div id="resultRecommendations" class="text-indigo-900 prose prose-sm max-w-none max-h-96 overflow-y-auto pr-2"></div>
+                            <div id="resultRecommendations" class="text-indigo-900 prose prose-sm max-w-none max-h-64 md:max-h-96 overflow-y-auto pr-2"></div>
                         </div>
                     </div>
                 </div>
 
-                <div class="mt-6 flex justify-center">
-                    <button onclick="resetPractice()" class="px-6 py-3 bg-gray-600 text-white rounded-xl font-semibold hover:bg-gray-700 transition-all flex items-center gap-2">
-                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div class="mt-4 md:mt-6 flex justify-center">
+                    <button onclick="resetPractice()" class="w-full md:w-auto px-6 py-2 md:py-3 bg-gray-600 text-white rounded-xl font-semibold hover:bg-gray-700 transition-all flex items-center justify-center gap-2 text-sm md:text-base">
+                        <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                         </svg>
                         Start New Practice
@@ -260,8 +291,8 @@
             </div>
         </main>
 
-        <footer class="border-t border-purple-200 mt-12 bg-white">
-            <div class="container mx-auto px-6 py-6 text-center text-sm text-gray-600">
+        <footer class="border-t border-purple-200 mt-8 md:mt-12 bg-white">
+            <div class="container mx-auto px-4 md:px-6 py-4 md:py-6 text-center text-xs md:text-sm text-gray-600">
                 <p class="korean-font">한국어 저널링 학습 &copy; 2026 - Master Korean through Journaling Practice</p>
             </div>
         </footer>
