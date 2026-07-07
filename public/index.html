@@ -63,19 +63,22 @@
             pointer-events: none;
         }
         .typing-animation {
-            overflow: hidden;
-            border-right: 3px solid rgba(255,255,255,0.75);
             white-space: nowrap;
-            animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite;
             display: inline-block;
+            min-width: 50px;
         }
-        @keyframes typing {
-            from { width: 0; }
-            to { width: 100%; }
+        .typing-cursor {
+            display: inline-block;
+            width: 3px;
+            height: 1em;
+            background-color: rgba(255,255,255,0.75);
+            margin-left: 2px;
+            animation: blink 0.7s infinite;
+            vertical-align: middle;
         }
-        @keyframes blink-caret {
-            from, to { border-color: transparent; }
-            50% { border-color: rgba(255,255,255,0.75); }
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
         }
         .level-icon {
             display: inline-flex;
@@ -97,7 +100,8 @@
             <div class="container mx-auto px-6 py-8">
                 <div class="text-center">
                     <h1 class="text-4xl font-bold text-white mb-2">
-                        <span class="korean-font typing-animation">한국어 저널링 학습</span>
+                        <span class="korean-font typing-animation" id="typingText"></span>
+                        <span class="typing-cursor"></span>
                     </h1>
                     <p class="text-purple-100 text-lg">Korean Journal Learning - Master Korean through Translation Practice</p>
                 </div>
@@ -263,6 +267,78 @@
         let debounceTimer = null;
         let currentWord = '';
         let suggestionCache = {};
+
+        // Typing animation
+        const phrases = [
+            { text: '한국어 저널링 학습', correct: true },
+            { text: '한국어 저닐링 학습', correct: false, fix: '한국어 저널링 학습' },
+            { text: '한국어 배우기', correct: true },
+            { text: 'Korean Learning', correct: true },
+            { text: '한국어 저널링 학습', correct: true }
+        ];
+        let phraseIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        let isFixing = false;
+        let currentPhrase = phrases[0];
+
+        function typeWriter() {
+            const typingElement = document.getElementById('typingText');
+            
+            if (!isDeleting && !isFixing) {
+                // Typing
+                if (charIndex < currentPhrase.text.length) {
+                    typingElement.textContent = currentPhrase.text.substring(0, charIndex + 1);
+                    charIndex++;
+                    setTimeout(typeWriter, 150); // Slower typing
+                } else {
+                    // Finished typing
+                    if (!currentPhrase.correct && currentPhrase.fix) {
+                        // Wait then start fixing
+                        setTimeout(() => {
+                            isFixing = true;
+                            typeWriter();
+                        }, 1000);
+                    } else {
+                        // Wait then start deleting
+                        setTimeout(() => {
+                            isDeleting = true;
+                            typeWriter();
+                        }, 2500);
+                    }
+                }
+            } else if (isFixing) {
+                // Delete typo and retype correct
+                if (charIndex > 0) {
+                    typingElement.textContent = currentPhrase.text.substring(0, charIndex - 1);
+                    charIndex--;
+                    setTimeout(typeWriter, 80);
+                } else {
+                    // Now type the correct version
+                    isFixing = false;
+                    currentPhrase = { text: currentPhrase.fix, correct: true };
+                    typeWriter();
+                }
+            } else if (isDeleting) {
+                // Deleting
+                if (charIndex > 0) {
+                    typingElement.textContent = currentPhrase.text.substring(0, charIndex - 1);
+                    charIndex--;
+                    setTimeout(typeWriter, 100);
+                } else {
+                    // Move to next phrase
+                    isDeleting = false;
+                    phraseIndex = (phraseIndex + 1) % phrases.length;
+                    currentPhrase = phrases[phraseIndex];
+                    setTimeout(typeWriter, 500);
+                }
+            }
+        }
+
+        // Start typing animation on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            typeWriter();
+        });
 
         async function generateParagraph() {
             const btn = document.getElementById('generateBtn');
