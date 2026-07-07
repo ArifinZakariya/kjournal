@@ -65,21 +65,29 @@ app.post('/api/generate-paragraph', async (req, res) => {
     const difficultyLevel = difficulty || 'beginner';
     
     let complexityGuide = '';
+    let topics = [];
+    
     if (difficultyLevel === 'beginner') {
       complexityGuide = 'Use simple vocabulary, present tense, basic sentence structures. Avoid idioms, complex grammar, or formal expressions. Keep sentences short (10-15 words).';
+      topics = ['daily routine', 'family', 'pets', 'weather', 'colors', 'numbers', 'food preferences', 'simple hobbies', 'school', 'home'];
     } else if (difficultyLevel === 'intermediate') {
       complexityGuide = 'Use moderate vocabulary, mix of tenses (past/present/future), compound sentences. Include some common idioms. Sentences can be 15-20 words.';
+      topics = ['travel experiences', 'cooking recipes', 'sports activities', 'shopping stories', 'work situations', 'friendships', 'entertainment', 'technology use', 'health habits', 'seasonal activities'];
     } else {
       complexityGuide = 'Use advanced vocabulary, complex grammar structures, formal and informal expressions, idioms, passive voice, and cultural references. Sentences can be 20+ words.';
+      topics = ['career development', 'philosophical thoughts', 'social issues', 'cultural analysis', 'business negotiations', 'environmental concerns', 'historical events', 'scientific discoveries', 'psychological insights', 'artistic expressions'];
     }
 
+    const randomTopic = topics[Math.floor(Math.random() * topics.length)];
+    const timestamp = Date.now();
+
     const systemPrompt = language === 'en' 
-      ? `You are a Korean language teacher. Generate an interesting paragraph in English (3-5 sentences) suitable for Korean translation practice at ${difficultyLevel} level. ${complexityGuide} Topics: daily life, hobbies, culture, food, travel, work, relationships. Make it conversational and natural.`
-      : `You are a Korean language teacher. Generate an interesting paragraph in Indonesian (3-5 sentences) suitable for Korean translation practice at ${difficultyLevel} level. ${complexityGuide} Topics: daily life, hobbies, culture, food, travel, work, relationships. Make it conversational and natural.`;
+      ? `You are a Korean language teacher. Generate a unique and interesting paragraph in English (3-5 sentences) suitable for Korean translation practice at ${difficultyLevel} level. ${complexityGuide} Focus on topic: ${randomTopic}. Make it conversational, natural, and ALWAYS GENERATE DIFFERENT CONTENT. Never repeat previous paragraphs. Be creative and vary the scenarios, characters, and situations.`
+      : `You are a Korean language teacher. Generate a unique and interesting paragraph in Indonesian (3-5 sentences) suitable for Korean translation practice at ${difficultyLevel} level. ${complexityGuide} Focus on topic: ${randomTopic}. Make it conversational, natural, and ALWAYS GENERATE DIFFERENT CONTENT. Never repeat previous paragraphs. Be creative and vary the scenarios, characters, and situations.`;
 
-    const userPrompt = `Generate a new ${difficultyLevel} level paragraph for Korean translation practice.`;
+    const userPrompt = `Generate a completely new and unique ${difficultyLevel} level paragraph about ${randomTopic} for Korean translation practice. Request ID: ${timestamp}. Make it different from any previous content.`;
 
-    console.log(`Generating ${difficultyLevel} paragraph in ${language}`);
+    console.log(`Generating ${difficultyLevel} paragraph in ${language} - Topic: ${randomTopic}`);
     const paragraph = await callAI(systemPrompt, userPrompt);
 
     res.json({ success: true, paragraph: paragraph.trim(), difficulty: difficultyLevel });
