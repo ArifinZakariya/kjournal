@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test</title>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        button { padding: 10px 20px; margin: 10px; cursor: pointer; }
+        pre { background: #f4f4f4; padding: 15px; border-radius: 5px; white-space: pre-wrap; }
+        .result { margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <h1>Korean Learning API Test</h1>
+    
+    <h2>1. Test Generate Paragraph</h2>
+    <button onclick="testGenerate('beginner')">Generate Beginner (EN)</button>
+    <button onclick="testGenerate('intermediate')">Generate Intermediate (EN)</button>
+    <button onclick="testGenerate('advanced')">Generate Advanced (EN)</button>
+    <div class="result" id="result1"></div>
+    
+    <h2>2. Test Word Suggestion</h2>
+    <button onclick="testSuggest('안녕')">Test: 안녕</button>
+    <button onclick="testSuggest('한국')">Test: 한국</button>
+    <button onclick="testSuggest('감사')">Test: 감사</button>
+    <div class="result" id="result2"></div>
+    
+    <h2>3. Test Translation Evaluation</h2>
+    <button onclick="testEvaluate()">Evaluate Sample Translation</button>
+    <div class="result" id="result3"></div>
+
+    <script>
+        async function testGenerate(difficulty) {
+            const result = document.getElementById('result1');
+            result.innerHTML = '<p>Loading...</p>';
+            
+            try {
+                const response = await fetch('/api/generate-paragraph', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ language: 'en', difficulty: difficulty || 'beginner' })
+                });
+                
+                const data = await response.json();
+                result.innerHTML = '<h3>Difficulty: ' + (difficulty || 'beginner') + '</h3><pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            } catch (error) {
+                result.innerHTML = '<p style="color:red">Error: ' + error.message + '</p>';
+            }
+        }
+        
+        async function testSuggest(word) {
+            const result = document.getElementById('result2');
+            result.innerHTML = '<p>Loading...</p>';
+            
+            try {
+                const response = await fetch('/api/suggest-word', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ word: word })
+                });
+                
+                const data = await response.json();
+                result.innerHTML = '<h3>Input: ' + word + '</h3><pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            } catch (error) {
+                result.innerHTML = '<p style="color:red">Error: ' + error.message + '</p>';
+            }
+        }
+        
+        async function testEvaluate() {
+            const result = document.getElementById('result3');
+            result.innerHTML = '<p>Loading...</p>';
+            
+            try {
+                const response = await fetch('/api/evaluate-translation', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        originalText: 'I love learning Korean language.',
+                        userTranslation: '나는 한국어를 배우는 것을 좋아해요.',
+                        sourceLang: 'en'
+                    })
+                });
+                
+                const data = await response.json();
+                result.innerHTML = '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+            } catch (error) {
+                result.innerHTML = '<p style="color:red">Error: ' + error.message + '</p>';
+            }
+        }
+    </script>
+</body>
+</html>
